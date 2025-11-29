@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { 
+            width: 250px; 
+            padding: 20px; 
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: 0;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            color: #333;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .tagline {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .status-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .status-card.off {
+            border-left-color: #f44336;
+        }
+        
+        .status-text {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .toggle-label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Toggle Switch Design */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #4CAF50;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        /* Button */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">PhishAegis</div>
+            <div class="tagline">AI-Powered Email Protection</div>
+        </div>
+        
+        <div class="status-card" id="statusCard">
+            <p class="status-text" id="statusText">Scanner Ready</p>
+        </div>
+        
+        <div class="toggle-container">
+            <span class="toggle-label">Auto Scan</span>
+            <label class="switch">
+                <input type="checkbox" id="toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+        
+        <button class="btn" id="websiteBtn">
+            Open Dashboard
+        </button>
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}MFA Verification - PhishAegis{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-indigo-900 to-purple-800 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
+        <div class="text-center">
+            <div class="mx-auto h-12 w-12 bg-cyan-500 rounded-full flex items-center justify-center">
+                <span class="text-white font-bold text-lg">🔐</span>
+            </div>
+            <h2 class="mt-6 text-3xl font-extrabold text-white">
+                Two-Factor Authentication
+            </h2>
+            <p class="mt-2 text-sm text-white/70">
+                Enter the 6-digit code sent to your email
+            </p>
+        </div>
+
+        <form class="mt-8 space-y-6" method="POST">
+            {{ form.hidden_tag() }}
+            
+            <div>
+                {{ form.code.label(class="sr-only") }}
+                {{ form.code(class="text-center text-2xl font-mono relative block w-full px-4 py-4 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition", placeholder="000000", maxlength="6") }}
+            </div>
+
+            <div>
+                <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-cyan-500 hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-400 transition transform hover:scale-105">
+                    {{ form.submit.label.text }}
+                </button>
+            </div>
+        </form>
+
+        <div class="text-center">
+            <p class="text-white/60 text-sm">
+                Didn't receive the code? 
+                <a href="{{ url_for('login') }}" class="font-medium text-cyan-300 hover:text-cyan-200 transition">
+                    Try again
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

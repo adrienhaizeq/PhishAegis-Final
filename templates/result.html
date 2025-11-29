@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Result - PhishAegis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            min-height: 100vh;
+        }
+        @keyframes progressFill {
+            from { stroke-dasharray: 0, 352; }
+            to { stroke-dasharray: var(--progress), 352; }
+        }
+        .progress-circle {
+            animation: progressFill 1.5s ease-out forwards;
+        }
+        .bounce-in {
+            animation: bounceIn 0.8s ease-out;
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="text-white">
+    <!-- Navigation -->
+    <nav class="border-b border-white/10 animate__animated animate__fadeInDown">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-400">PhishAegis</h1>
+                <div class="space-x-4">
+                    <a href="{{ url_for('dashboard') }}" class="text-white/70 hover:text-white transition">Dashboard</a>
+                    <a href="{{ url_for('logout') }}" class="text-white/70 hover:text-white transition">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <div class="glass rounded-2xl p-8 animate__animated animate__fadeInUp">
+            <h2 class="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent animate__animated animate__pulse animate__infinite">Scan Result</h2>
+            
+            <!-- Email Details -->
+            <div class="mb-8 p-6 bg-white/5 rounded-xl border border-white/10 animate__animated animate__slideInLeft">
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-white/60 text-sm mb-1">Sender</p>
+                        <p class="text-white font-medium">{{ data.sender }}</p>
+                    </div>
+                    <div>
+                        <p class="text-white/60 text-sm mb-1">Subject</p>
+                        <p class="text-white font-medium">{{ data.subject }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result Alert -->
+            <div class="text-center mb-8 bounce-in">
+                {% if data.label == 'phishing' %}
+                    <div class="bg-rose-500/20 border border-rose-500/30 text-rose-400 px-8 py-6 rounded-xl mb-6 backdrop-blur-sm animate__animated animate__headShake animate__infinite">
+                        <p class="text-2xl font-bold mb-2">🚨 PHISHING DETECTED!</p>
+                        <p class="text-rose-300">This email shows strong signs of being a phishing attempt. Do not click any links!</p>
+                    </div>
+                {% elif data.label == 'legitimate' %}
+                    <div class="bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 px-8 py-6 rounded-xl mb-6 backdrop-blur-sm animate__animated animate__tada">
+                        <p class="text-2xl font-bold mb-2">✅ LEGITIMATE EMAIL</p>
+                        <p class="text-emerald-300">This email appears to be safe and legitimate. You can proceed with confidence!</p>
+                    </div>
+                {% else %}
+                    <div class="bg-yellow-500/20 border border-yellow-500/30 text-yellow-400 px-8 py-6 rounded-xl mb-6 backdrop-blur-sm animate__animated animate__pulse">
+                        <p class="text-2xl font-bold mb-2">⚠️ SUSPICIOUS EMAIL</p>
+                        <p class="text-yellow-300">This email shows some suspicious characteristics. Proceed with caution.</p>
+                    </div>
+                {% endif %}
+
+                <!-- Confidence Score -->
+                <div class="mt-8 animate__animated animate__zoomIn">
+                    <p class="text-white/60 text-lg mb-4">Confidence Score</p>
+                    <div class="relative w-32 h-32 mx-auto">
+                        <svg class="w-full h-full transform -rotate-90">
+                            <!-- Background circle -->
+                            <circle cx="64" cy="64" r="56" stroke="#374151" stroke-width="12" fill="none" />
+                            <!-- Progress circle -->
+                            <circle cx="64" cy="64" r="56" 
+                                {% if data.label == 'phishing' %}stroke="#ef4444"
+                                {% elif data.label == 'legitimate' %}stroke="#10b981"  
+                                {% else %}stroke="#f59e0b"{% endif %}
+                                stroke-width="12" fill="none"
+                                class="progress-circle"
+                                style="--progress: {{ (data.score / 100 * 352) | round(1) }}"
+                                stroke-linecap="round" />
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <p class="text-3xl font-bold text-white animate__animated animate__bounceIn">{{ data.score }}%</p>
+                            <p class="text-white/60 text-sm mt-1">confidence</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mt-12 animate__animated animate__fadeInUp animate__delay-1s">
+                <a href="{{ url_for('dashboard') }}" 
+                   class="bg-gradient-to-r from-violet-600 to-cyan-500 text-white px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition text-center transform hover:scale-105 duration-300">
+                    📊 Dashboard
+                </a>
+                <button onclick="window.history.back()" 
+                        class="bg-white/10 text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/20 transition border border-white/20 text-center transform hover:scale-105 duration-300">
+                    🔍 Scan More
+                </button>
+                <a href="{{ url_for('logout') }}" 
+                   class="bg-rose-500/20 text-rose-400 px-8 py-3 rounded-lg font-semibold hover:bg-rose-500/30 transition border border-rose-500/30 text-center transform hover:scale-105 duration-300">
+                    🚪 Logout
+                </a>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="glass rounded-2xl p-6 mt-8 animate__animated animate__fadeInUp animate__delay-2s">
+            <h3 class="text-lg font-bold mb-4 text-cyan-400">💡 Security Tips</h3>
+            <ul class="text-white/70 space-y-2 text-sm">
+                <li class="animate__animated animate__fadeInLeft">• Always verify sender email addresses</li>
+                <li class="animate__animated animate__fadeInLeft animate__delay-1s">• Check for spelling and grammar mistakes</li>
+                <li class="animate__animated animate__fadeInLeft animate__delay-2s">• Hover over links to see actual URLs before clicking</li>
+                <li class="animate__animated animate__fadeInLeft animate__delay-3s">• Never share passwords or personal information via email</li>
+                <li class="animate__animated animate__fadeInLeft animate__delay-4s">• When in doubt, contact the organization directly</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effects to buttons
+            const buttons = document.querySelectorAll('button, a');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.classList.add('animate__animated', 'animate__pulse');
+                });
+                button.addEventListener('mouseleave', function() {
+                    this.classList.remove('animate__animated', 'animate__pulse');
+                });
+            });
+            
+            // Add confetti effect for legitimate emails
+            {% if data.label == 'legitimate' %}
+            setTimeout(() => {
+                const emoji = document.createElement('div');
+                emoji.innerHTML = '🎉✅🛡️';
+                emoji.className = 'text-4xl text-center mt-4 animate__animated animate__bounceIn';
+                document.querySelector('.bounce-in').appendChild(emoji);
+            }, 1000);
+            {% endif %}
+        });
+    </script>
+</body>
+</html>

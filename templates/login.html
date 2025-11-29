@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Login - PhishAegis{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-indigo-900 to-purple-800 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
+        <div class="text-center">
+            <h2 class="mt-6 text-3xl font-extrabold text-white">
+                Welcome Back
+            </h2>
+            <p class="mt-2 text-sm text-white/70">
+                Sign in to your PhishAegis account
+            </p>
+        </div>
+
+        <!-- Manual Login Form -->
+        <form class="mt-8 space-y-6" method="POST">
+            {{ form.hidden_tag() }}
+            <div class="space-y-4">
+                <div>
+                    {{ form.email.label(class="sr-only") }}
+                    {{ form.email(class="relative block w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition", placeholder="Email address") }}
+                </div>
+                <div>
+                    {{ form.password.label(class="sr-only") }}
+                    {{ form.password(class="relative block w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition", placeholder="Password") }}
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-cyan-500 hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-400 transition transform hover:scale-105">
+                    {{ form.submit.label.text }}
+                </button>
+            </div>
+        </form>
+
+        <div class="mt-6">
+            <div class="relative">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-white/20"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-transparent text-white/70">Or continue with</span>
+                </div>
+            </div>
+
+            <!-- Google Login Button -->
+            <div class="mt-4">
+                <a href="{{ url_for('google_login') }}" 
+                   class="w-full flex items-center justify-center gap-3 px-4 py-3 border border-white/20 rounded-lg text-white font-medium hover:bg-white/10 transition transform hover:scale-105 backdrop-blur-sm">
+                    <img src="https://www.google.com/favicon.ico" alt="Google" class="w-5 h-5">
+                    <span>Sign in with Google</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <p class="text-white/70 text-sm">
+                Don't have an account? 
+                <a href="{{ url_for('register') }}" class="font-medium text-cyan-300 hover:text-cyan-200 transition">
+                    Sign up here
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
