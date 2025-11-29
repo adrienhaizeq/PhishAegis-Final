@@ -23,7 +23,7 @@ from datetime import datetime
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'thisisasecretkey')
+app.config['SECRET_KEY'] = 'thisisasecretkey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/phisaegish_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -37,8 +37,8 @@ os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
 google_bp = make_google_blueprint(
-    client_id=os.environ.get('GOOGLE_CLIENT_ID', ''),
-    client_secret=os.environ.get('GOOGLE_CLIENT_SECRET', ''),
+    client_id="557627648501-mfbpd2g45f1bh1pge57vf80k6m2qlkh4.apps.googleusercontent.com",
+    client_secret="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",
     scope=["profile", "email"],
     redirect_to="google_callback"
 )
